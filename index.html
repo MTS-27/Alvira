@@ -352,7 +352,8 @@
     </section>
 
     <!-- Music (autoplay) -->
-    <audio id="bgMusic" src="birthday.mp3" autoplay loop></audio>
+    <!-- Music (autoplay muted) -->
+<audio id="bgMusic" src="birthday.mp3" autoplay loop muted></audio>
 
     <!-- Confetti library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -364,6 +365,8 @@
         const cake = document.getElementById('cake');
         const candleCount = 17;
         const radius = 80; // distance from cake centre
+        // Reference to the audio element (muted for autoplay)
+        const music = document.getElementById('bgMusic');
         for (let i = 0; i < candleCount; i++) {
             const angle = (i / candleCount) * Math.PI * 2;
             const x = radius * Math.cos(angle) + cake.offsetWidth / 2 - 4; // 4 = half candle width
@@ -385,6 +388,10 @@
             candlesBlown = true;
             // fade out flames
             document.querySelectorAll('.flame').forEach(f => f.parentElement.classList.add('blown'));
+
+            // Unmute and start the music now that the user interacted
+            music.muted = false;
+            music.play().catch(() => {});
 
             // confetti burst – 5 bursts for a dramatic effect
             const duration = 2 * 1000;
@@ -408,20 +415,12 @@
         });
 
         /* -------------------------------------------------
-           Music toggle button
+           Optional: pause music when page hidden (saves annoyance)
         ------------------------------------------------- */
-        const musicBtn = document.getElementById('musicBtn');
-        const music = document.getElementById('bgMusic');
-        let playing = false;
-        musicBtn.addEventListener('click', () => {
-            if (playing) {
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
                 music.pause();
-                musicBtn.textContent = '▶';
-            } else {
-                music.play().catch(() => {/* autoplay blocked – user must interact */ });
-                musicBtn.textContent = '❚❚';
             }
-            playing = !playing;
         });
 
         /* -------------------------------------------------
