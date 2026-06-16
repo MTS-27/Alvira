@@ -173,6 +173,8 @@
             border-radius: 2px;
             bottom: 100%;
             transform-origin: bottom center;
+            margin-left: -4px;  /* half of 8px width  */
+            margin-top: -10px;  /* half of 20px height */
         }
 
         .candle::before {
@@ -279,6 +281,97 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, .3);
         }
 
+        /* ---------- Pink Front Card ---------- */
+        .card {
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto;
+            background: #ffb6c1;
+            /* light pink */
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card .front {
+            padding: 2rem;
+            text-align: center;
+            color: #fff;
+            position: relative;
+        }
+
+        .card .front h1 {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .card .front .heart-icon {
+            width: 80px;
+            height: 80px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 32 29" xmlns="http://www.w3.org/2000/svg"><path d="M23.6 0c-3.4 0-6.4 1.7-8.1 4.4C13.8 1.7 10.8 0 7.4 0 3.3 0 0 3.4 0 7.6c0 9.4 16 21.4 16 21.4s16-12 16-21.4C32 3.4 28.7 0 24.6 0z" fill="%23fff"/></svg>') center/contain no-repeat;
+            margin: 1rem auto 0;
+        }
+
+        .card .content {
+            display: none;
+            flex-direction: row;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .card.open .content {
+            display: flex;
+        }
+
+        .card .left,
+        .card .right {
+            flex: 1;
+        }
+
+        .card .right p {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.5;
+        }
+
+        .card .sign {
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+
+        .heart-section {
+            margin-top: 2rem;
+        }
+
+        .heart-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 32 29" xmlns="http://www.w3.org/2000/svg"><path d="M23.6 0c-3.4 0-6.4 1.7-8.1 4.4C13.8 1.7 10.8 0 7.4 0 3.3 0 0 3.4 0 7.6c0 9.4 16 21.4 16 21.4s16-12 16-21.4C32 3.4 28.7 0 24.6 0z" fill="%23ff69b4"/></svg>') center/contain no-repeat;
+            animation: floatHeart 5s linear infinite;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-200px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
         /* -------------------------------------------------
        Responsive tweaks
     ------------------------------------------------- */
@@ -290,33 +383,6 @@
 
             .card {
                 padding: 1.5rem;
-            }
-        }
-
-        /* ---------- Pandas ---------- */
-                /* ---------- Love Hearts ---------- */
-        .heart-container {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            margin: 2rem 0;
-        }
-        .heart {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 32 29" xmlns="http://www.w3.org/2000/svg"><path d="M23.6 0c-3.4 0-6.4 1.7-8.1 4.4C13.8 1.7 10.8 0 7.4 0 3.3 0 0 3.4 0 7.6c0 9.4 16 21.4 16 21.4s16-12 16-21.4C32 3.4 28.7 0 24.6 0z" fill="%23ff69b4"/></svg>') center/contain no-repeat;
-            animation: floatHeart 5s linear infinite;
-        }
-        @keyframes floatHeart {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-200px) rotate(360deg);
-                opacity: 0;
             }
         }
     </style>
@@ -331,58 +397,134 @@
         <h1>Happy 17th Birthday, Alvira!</h1>
     </section>
 
-    <!-- Cake -->
-    <section class="cake-section">
-        <div class="cake" id="cake">
-            <!-- 17 candles generated via JS -->
+    <!-- Pink Front Card -->
+    <section class="card" id="birthdayCard">
+        <div class="front">
+            <h1>Happy Birthday</h1>
+            <div class="heart-icon"></div>
         </div>
-        <p style="margin-top:0.5rem;font-family:'Poppins',sans-serif;">Tap the cake to blow out the candles!</p>
+        <div class="content">
+            <div class="left">
+                <section class="cake-section">
+                    <div class="cake" id="cake">
+                        <!-- 17 candles positioned around the cake -->
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(0deg) translate(90px) rotate(-0deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(21.176deg) translate(90px) rotate(-21.176deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(42.352deg) translate(90px) rotate(-42.352deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(63.528deg) translate(90px) rotate(-63.528deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(84.704deg) translate(90px) rotate(-84.704deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(105.88deg) translate(90px) rotate(-105.88deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(127.056deg) translate(90px) rotate(-127.056deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(148.232deg) translate(90px) rotate(-148.232deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(169.408deg) translate(90px) rotate(-169.408deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(190.584deg) translate(90px) rotate(-190.584deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(211.76deg) translate(90px) rotate(-211.76deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(232.936deg) translate(90px) rotate(-232.936deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(254.112deg) translate(90px) rotate(-254.112deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(275.288deg) translate(90px) rotate(-275.288deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(296.464deg) translate(90px) rotate(-296.464deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(317.64deg) translate(90px) rotate(-317.64deg);">
+                            <div class="flame"></div>
+                        </div>
+                        <div class="candle"
+                            style="position:absolute; top:50%; left:50%; transform:rotate(338.816deg) translate(90px) rotate(-338.816deg);">
+                            <div class="flame"></div>
+                        </div>
+                    </div>
+                    <p style="margin-top:0.5rem;font-family:'Poppins',sans-serif;">Tap the cake to blow out the candles!
+                    </p>
+                </section>
+            </div>
+            <div class="right">
+                <p>Wishing you the happiest 17th birthday, Alvira! May this year be filled with unforgettable memories,
+                    endless happiness and all the success in the world. Enjoy your special day to the fullest!</p>
+                <p class="sign">With love, Taha</p>
+            </div>
+        </div>
     </section>
 
-    <!-- Message Card -->
-    <section class="message-card">
-        <div class="card">
-            <p>Wishing you the happiest 17th birthday, Alvira! May this year be filled with unforgettable memories,
-                endless happiness and all the success in the world. Enjoy your special day to the fullest!</p>
-            <p class="sign">With love, Taha</p>
-        </div>
+    <!-- Hearts -->
+    <section class="heart-section">
+        <div class="heart-container" id="heartContainer"></div>
     </section>
 
-    <!-- Pandas -->
-    <section class="panda-section">
-        <div class="panda"></div>
-        <div class="panda"></div>
-        <div class="panda"></div>
-        <div class="panda"></div>
-    </section>
+
 
     <!-- Confetti library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <script>
-        /* -------------------------------------------------
-           Helper: create 17 candles around the cake
-        ------------------------------------------------- */
-        const cake = document.getElementById('cake');
-        const candleCount = 17;
-        const radius = 80; // distance from cake centre
 
-        for (let i = 0; i < candleCount; i++) {
-            const angle = (i / candleCount) * Math.PI * 2;
-            const x = radius * Math.cos(angle) + cake.offsetWidth / 2 - 4; // 4 = half candle width
-            const y = radius * Math.sin(angle) + cake.offsetHeight / 2 - 20;
-            const candle = document.createElement('div');
-            candle.className = 'candle';
-            candle.style.position = 'absolute';
-            candle.style.left = `${x}px`;
-            candle.style.top = `${y}px`;
-            candle.innerHTML = '<div class="flame"></div>';
-            cake.appendChild(candle);
+        // Card click to open (toggle front/back view)
+        const card = document.getElementById('birthdayCard');
+        const front = card.querySelector('.front');
+        front.addEventListener('click', (e) => {
+            e.stopPropagation();
+            card.classList.add('open');
+        });
+        // generate hearts
+        const heartContainer = document.getElementById('heartContainer');
+        for (let i = 0; i < 30; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.bottom = '-30px';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heartContainer.appendChild(heart);
         }
+
+
 
         /* -------------------------------------------------
            Cake click: blow out candles + confetti
         ------------------------------------------------- */
+        const cake = document.getElementById('cake');
         let candlesBlown = false;
         cake.addEventListener('click', () => {
             // Blow out candles only the first time
