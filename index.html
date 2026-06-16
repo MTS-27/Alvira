@@ -103,7 +103,7 @@
             font-size: clamp(2rem, 8vw, 4rem);
             color: var(--rose-gold);
             text-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-            animation: floatY 3s ease-in-out infinite;
+            animation: fadeIn 2s ease-out, float 4s ease-in-out infinite;
         }
 
         @keyframes fadeIn {
@@ -116,7 +116,7 @@
             }
         }
 
-        @keyframes floatY {
+        @keyframes float {
 
             0%,
             100% {
@@ -146,7 +146,7 @@
             border-radius: 50% 50% 45% 45% / 55% 55% 45% 45%;
             box-shadow: inset 0 -10px 12px rgba(0, 0, 0, .1);
             cursor: pointer;
-            animation: cakeShake 0.3s ease-in-out infinite paused;
+            animation: cakeShake 0.3s
         }
 
         .cake:hover {
@@ -280,36 +280,6 @@
         }
 
         /* -------------------------------------------------
-       Music Toggle
-    ------------------------------------------------- */
-        .music-toggle {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            z-index: 10;
-        }
-
-        .music-toggle button {
-            background: var(--primary-pink);
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            color: #fff;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background .3s;
-        }
-
-        .music-toggle button:hover {
-            background: #ff7aa1;
-        }
-
-        /* -------------------------------------------------
        Responsive tweaks
     ------------------------------------------------- */
         @media(max-width:600px) {
@@ -320,6 +290,33 @@
 
             .card {
                 padding: 1.5rem;
+            }
+        }
+
+        /* ---------- Pandas ---------- */
+                /* ---------- Love Hearts ---------- */
+        .heart-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 32 29" xmlns="http://www.w3.org/2000/svg"><path d="M23.6 0c-3.4 0-6.4 1.7-8.1 4.4C13.8 1.7 10.8 0 7.4 0 3.3 0 0 3.4 0 7.6c0 9.4 16 21.4 16 21.4s16-12 16-21.4C32 3.4 28.7 0 24.6 0z" fill="%23ff69b4"/></svg>') center/contain no-repeat;
+            animation: floatHeart 5s linear infinite;
+        }
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-200px) rotate(360deg);
+                opacity: 0;
             }
         }
     </style>
@@ -351,9 +348,13 @@
         </div>
     </section>
 
-    <!-- Music (autoplay) -->
-    <!-- Music (autoplay muted) -->
-<audio id="bgMusic" src="birthday.mp3" autoplay loop muted></audio>
+    <!-- Pandas -->
+    <section class="panda-section">
+        <div class="panda"></div>
+        <div class="panda"></div>
+        <div class="panda"></div>
+        <div class="panda"></div>
+    </section>
 
     <!-- Confetti library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -365,14 +366,14 @@
         const cake = document.getElementById('cake');
         const candleCount = 17;
         const radius = 80; // distance from cake centre
-        // Reference to the audio element (muted for autoplay)
-        const music = document.getElementById('bgMusic');
+
         for (let i = 0; i < candleCount; i++) {
             const angle = (i / candleCount) * Math.PI * 2;
             const x = radius * Math.cos(angle) + cake.offsetWidth / 2 - 4; // 4 = half candle width
-            const y = radius * Math.sin(angle) + cake.offsetHeight / 2 - 20; // 20 = candle height
+            const y = radius * Math.sin(angle) + cake.offsetHeight / 2 - 20;
             const candle = document.createElement('div');
             candle.className = 'candle';
+            candle.style.position = 'absolute';
             candle.style.left = `${x}px`;
             candle.style.top = `${y}px`;
             candle.innerHTML = '<div class="flame"></div>';
@@ -384,29 +385,24 @@
         ------------------------------------------------- */
         let candlesBlown = false;
         cake.addEventListener('click', () => {
-            if (candlesBlown) return;
-            candlesBlown = true;
-            // fade out flames
-            document.querySelectorAll('.flame').forEach(f => f.parentElement.classList.add('blown'));
+            // Blow out candles only the first time
+            if (!candlesBlown) {
+                candlesBlown = true;
+                document.querySelectorAll('.flame').forEach(f => f.parentElement.classList.add('blown'));
+            }
 
-            // Unmute and start the music now that the user interacted
-            music.muted = false;
-            music.play().catch(() => {});
-
-            // confetti burst – 5 bursts for a dramatic effect
-            const duration = 2 * 1000;
+            // One‑burst confetti
+            const duration = 2000;
             const animationEnd = Date.now() + duration;
             const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
-            function randomInRange(min, max) {
-                return Math.random() * (max - min) + min;
-            }
+            const randomInRange = (min, max) => Math.random() * (max - min) + min;
             const interval = setInterval(() => {
                 const timeLeft = animationEnd - Date.now();
                 if (timeLeft <= 0) {
-                    return clearInterval(interval);
+                    clearInterval(interval);
+                    return;
                 }
                 const particleCount = 50 * (timeLeft / duration);
-                // since particles fall down, start a bit higher than the cake
                 confetti(Object.assign({}, defaults, {
                     particleCount,
                     origin: { x: randomInRange(0.3, 0.7), y: 0.6 }
@@ -414,25 +410,14 @@
             }, 250);
         });
 
-        /* -------------------------------------------------
-           Optional: pause music when page hidden (saves annoyance)
-        ------------------------------------------------- */
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                music.pause();
-            }
-        });
 
         /* -------------------------------------------------
            Optional: pause music when page hidden (saves annoyance)
         ------------------------------------------------- */
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden && playing) {
-                music.pause();
-                musicBtn.textContent = '▶';
-                playing = false;
-            }
-        });
+
+
+
+
     </script>
 </body>
 
